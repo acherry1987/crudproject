@@ -120,9 +120,55 @@
     			});
 			}
 			
+			function add_movie(name, director, watched, recommended, rating) {
+				$.ajax({
+    				type: 'POST',
+    				url: '/php/create.php',
+    				dataType: 'json',
+					data: {'name': name, 'director': director, 'watched': watched, 'recommended': recommended, 'rating': rating},
+					success: function(msg) {
+						if (msg.message != 'success') {
+							alert(msg.data);
+						}
+  					}
+  				});
+			}
+
+			function update_movie(name, watched, recommended, rating) {
+				$.ajax({
+    				type: 'POST',
+    				url: '/php/update.php',
+    				dataType: 'json',
+					data: {'name': name, 'watched': watched, 'recommended': recommended, 'rating': rating},
+					success: function(msg) {
+						if (msg.message != 'success') {
+							alert(msg.data);
+						}
+  					}
+  				});
+			}
+
+			function delete_movie(name) {
+				$.ajax({
+    				type: 'POST',
+    				url: '/php/delete.php',
+    				dataType: 'json',
+					data: {'name': name},
+					success: function(msg) {
+						if (msg.message != 'success') {
+							alert(msg.data);
+						}
+  					}
+  				});
+			}
+
+			
 		// show home
 		$( '#home' ).on( 'pageshow', function(){
 				loadmenu('home');
+				update_movie('The Revenant', 1, 0, 1);
+				delete_movie('Star Wars: The Force Awakens');
+				
 			});
 
 		// show about
@@ -134,6 +180,9 @@
 				// show contact
 		$( '#contact' ).on( 'pageshow', function(){
 				loadmenu('contact');
+				add_movie('Mad Max: Fury Road', 'George Miller', 0, 0, 6);
+				add_movie('Star Wars: The Force Awakens', 'J.J. Abrahms', 1, 1, 8);
+				add_movie('The Revenant', 'Alejandro González Iñárritu', 1, 1, 9);
 			});
 
 		</script>

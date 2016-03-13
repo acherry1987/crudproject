@@ -8,11 +8,13 @@ try {
 	include('db_init.php');
 
 	// enter the submitted data into the database
-	$sql = "UPDATE `my_awesome_todo_list` SET `todo` = :todo WHERE `iid` = :id";
+	$sql = "UPDATE `movies` SET `watched` = :watched , `rating` = :rating, `recommended` = :recommended WHERE `name` = :name;";
 	// bind the params
 	$statement = $db->prepare( $sql );
-	$statement->bindParam( ':id', $_POST['id'] );
-	$statement->bindParam( ':todo', $_POST['text'] );
+	$statement->bindParam( ':name', $_POST['name'] );
+	$statement->bindParam( ':watched', $_POST['watched'] );
+	$statement->bindParam( ':recommended', $_POST['recommended'] );
+	$statement->bindParam( ':rating', $_POST['rating'] );
 	// execute that statement
 	$statement->execute();
 

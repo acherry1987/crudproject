@@ -8,10 +8,10 @@ try {
 	include('db_init.php');
 
 	// enter the submitted data into the database
-	$sql = "DELETE FROM `my_awesome_todo_list` WHERE `iid` = :id";
+	$sql = "DELETE FROM `movies` WHERE `name` = :name;";
 	// bind the params
 	$statement = $db->prepare( $sql );
-	$statement->bindParam( ':id', $_POST['id'] );
+	$statement->bindParam( ':name', $_POST['name'] );
 	// execute that statement
 	$statement->execute();
 

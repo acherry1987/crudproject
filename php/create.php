@@ -7,21 +7,16 @@ try {
 	// include database setup
 	include('db_init.php');
 
-	// create a new table
-	$sql = "CREATE TABLE IF NOT EXISTS `my_awesome_todo_list` (
-		`iid` INT NOT NULL AUTO_INCREMENT,
-		`todo` VARCHAR(255) NOT NULL,
-		PRIMARY KEY (`iid`)
-	) ENGINE = InnoDB;";
-	// execute the create statement
-	$result = $db->exec( $sql );
-
 	// enter the submitted data into the database
-	$sql = "INSERT INTO `my_awesome_todo_list`
-		(`todo`) VALUES ( :todo );";
+	$sql = "INSERT INTO `movies`
+		(`name`, `director`, `watched`, `recommended`, `rating`) VALUES ( :name, :director, :watched, :recommended, :rating );";
 	// bind the params
 	$statement = $db->prepare( $sql );
-	$statement->bindParam( ':todo', $_POST['todo'] );
+	$statement->bindParam( ':name', $_POST['name'] );
+	$statement->bindParam( ':director', $_POST['director'] );
+	$statement->bindParam( ':watched', $_POST['watched'] );
+	$statement->bindParam( ':recommended', $_POST['recommended'] );
+	$statement->bindParam( ':rating', $_POST['rating'] );
 	// execute that statement
 	$statement->execute();
 

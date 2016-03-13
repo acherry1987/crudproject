@@ -1,2 +1,2 @@
 # crudproject
-CRUD Project version 0.1
+CRUD Project version 0.2

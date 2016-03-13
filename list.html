@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>CRUD Example</title>
+</head>
+<body>
+
+	<ul id='todo'></ul>
+
+	<input id='save' type='button' value='Save' />
+
+	<script>
+
+		// create an asynchronous GET request to the /read.php page
+		var xhr = new XMLHttpRequest();
+		xhr.open( 'GET', 'read.php' );
+		xhr.send();
+
+		// set up a event listner to check for status changes
+		xhr.onreadystatechange = function() {
+			// if everything worked out, then..
+			if( xhr.readyState == 4
+				&& xhr.status == 200 ) {
+
+				// process the response
+				processText( xhr.responseText );
+
+			}
+		}
+
+		// this function will
+		// process the response from read.php
+		// and create list items for each todo
+		function processText( txt ) {
+			// turn the text into an object
+			var obj = JSON.parse( txt );
+
+			// only if success
+			if( obj.message = 'success' ) {
+				// extract the 'data' from it
+				var data = obj.data;
+
+				// iterate over all the data
+				// to create list items
+				for( var i=0; i<data.length; i++ ) {
+					// console.log( data[i] );
+					
+					// create a new list item
+					var li = document.createElement('li');
+					// add a class
+					li.className = 'item';
+					// add text to it
+					li.textContent = data[i].todo;
+					// add id to it
+					li.setAttribute( 'data-id', data[i].iid );
+					// make the content editable
+					li.setAttribute( 'contenteditable', true );
+					// add a delete button
+					var btn = document.createElement('button');
+					btn.textContent = 'X';
+					btn.addEventListener( 'click', del );
+					li.appendChild( btn );
+					// add it to the unordered list
+					document.querySelector('#todo').appendChild( li );
+
+				}
+			}
+		}
+
+		// add an event listener to the button
+		// save the records one-by-one
+		document.querySelector('#save').addEventListener( 'click', save );
+		function save() {
+			// find the list
+			var list = document.querySelector('#todo');
+			// iterate over all the items
+			var items = list.querySelectorAll('li');
+			for( var i=0; i < items.length; i++ ) {
+				// var id = items[i].getAttribute('data-id');
+				var id = items[i].dataset['id'];
+				var text = encodeURIComponent(items[i].firstChild.textContent);
+				var data = "id="+id+"&text="+text;
+				console.log(data);
+				// console.log( i, id, text );
+				// create an xhr request
+				var xhr = new XMLHttpRequest();
+				xhr.open( 'POST', 'update.php' );
+				// set the header type
+				xhr.setRequestHeader( 'Content-type', 'application/x-www-form-urlencoded' );
+				// set length (optional)
+				// xhr.setRequestHeader( 'Content-length', data.length );
+				// send
+				xhr.send( data );
+				// set up a event listner to check for status changes
+				xhr.onreadystatechange = function() {
+					// if everything worked out, then..
+					if( xhr.readyState == 4
+						&& xhr.status == 200 ) {
+						// process the response
+						console.log( xhr.responseText );
+					}
+				}
+
+			}
+			// send them to the back-end (one-by-one)
+		}
+
+		// this sends a delete request
+		function del( ev ) {
+			var parent = ev.target.parentNode;
+			var id = parent.dataset['id'];
+			var data = 'id='+id;
+			// create an xhr request
+			var xhr = new XMLHttpRequest();
+			xhr.open( 'POST', 'delete.php' );
+			// set the header type
+			xhr.setRequestHeader( 'Content-type', 'application/x-www-form-urlencoded' );
+			// send
+			xhr.send( data );
+			// set up a event listner to check for status changes
+			xhr.onreadystatechange = function() {
+				// if everything worked out, then..
+				if( xhr.readyState == 4
+					&& xhr.status == 200 ) {
+					// process the response
+					console.log( xhr.responseText );
+					var json = JSON.parse( xhr.responseText );
+					if( json.message == 'success' ) {
+						parent.remove();
+					}
+				}
+			}
+
+		}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	</script>
+
+</body>
+<html>

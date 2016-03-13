@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>jQuery Mobile Template</title>
+		<meta name='viewport' content='width=device-width, initial-scale=1.0'>
+		<script src='//ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js'></script>
+		<script src='//ajax.googleapis.com/ajax/libs/jquerymobile/1.4.5/jquery.mobile.min.js'></script>
+		<link rel='stylesheet' href='//ajax.googleapis.com/ajax/libs/jquerymobile/1.4.5/jquery.mobile.min.css'>
+	</head>
+	<body>
+		<!-- PAGE -->
+		<div data-role='page' id='home'>
+			<!-- header -->
+			<div data-role='header' data-position='fixed'>
+				<h1>Page One</h1>
+			</div>
+			<!-- content -->
+			<article>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</article>
+		</div>
+
+		<div data-role='page' id='about'>
+			<!-- header -->
+			<div data-role='header' data-position='fixed'>
+				<h1>Page Two</h1>
+			</div>
+			<!-- content -->
+			<div>
+				<article id='about-article'>
+          something...
+				</article>
+			</div>
+		</div>
+
+		<div data-role='page' id='contact'>
+			<!-- header -->
+			<div data-role='header' data-position='fixed'>
+				<h1>Page Three</h1>
+			</div>
+		</div>
+
+		<!-- SCRIPT -->
+		<script>
+					// dynamically adds footer and navbar
+			function loadmenu( page ) {
+				// get handle on page
+				var page = document.querySelector( '#'+page );
+				// check if nav exists
+				if( !page.querySelector('div[data-role=footer]') ) {
+					console.log('nofooter');
+					// create it
+					var foot = document.createElement('div');
+					foot.setAttribute( 'data-role', 'footer' );
+					foot.setAttribute( 'data-position', 'fixed' );
+					var nav = document.createElement('div');
+					nav.setAttribute( 'data-role', 'navbar' );
+					var ul = document.createElement( 'ul' );
+					// LINKS
+					//// HOME
+					var li1 = document.createElement( 'li' );
+					var a = document.createElement( 'a' );
+					a.textContent = 'Home';
+					a.setAttribute( 'href', '#home' );
+					a.setAttribute( 'data-icon', 'home' );
+					li1.appendChild( a );
+					//// ABOUT
+					var li2 = document.createElement( 'li' );
+					var a = document.createElement( 'a' );
+					a.textContent = 'About';
+					a.setAttribute( 'href', '#about' );
+					a.setAttribute( 'data-icon', 'info' );
+					li2.appendChild( a );
+					//// CONTACT
+					var li3 = document.createElement( 'li' );
+					var a = document.createElement( 'a' );
+					a.textContent = 'Contact';
+					a.setAttribute( 'href', '#contact' );
+					a.setAttribute( 'data-icon', 'comment' );
+					li3.appendChild( a );
+					//// AJAX
+					// var li4 = document.createElement( 'li' );
+					// var a = document.createElement( 'a' );
+					// a.textContent = 'AJAX';
+					// a.setAttribute( 'href', '#ajax' );
+					// a.setAttribute( 'data-icon', 'recycle' );
+					// li4.appendChild( a );
+					// append links
+					ul.appendChild( li1 );
+					ul.appendChild( li2 );
+					ul.appendChild( li3 );
+					// ul.appendChild( li4 );
+					// append list to nav to foot
+					nav.appendChild( ul );
+					foot.appendChild( nav );
+					page.appendChild( foot );
+					// trigger navbar initialization
+					jQuery(nav).navbar();
+					// trigger proper page creation for footer placement
+					jQuery(page).trigger('create');
+				}
+			}
+
+		// show home
+		$( '#home' ).on( 'pageshow', function(){
+				loadmenu('home');
+			});
+
+		// show about
+		$( '#about' ).on( 'pageshow', function(){
+				loadmenu('about');
+				// do plugin thing
+        // ...
+			});
+
+				// show contact
+		$( '#contact' ).on( 'pageshow', function(){
+				loadmenu('contact');
+			});
+
+		</script>
+	</body>
+</html>

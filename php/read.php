@@ -7,9 +7,8 @@ try {
 	// include database setup
 	include('db_init.php');
 
-
 	// enter the submitted data into the database
-	$sql = "SELECT `iid`,`todo` FROM `my_awesome_todo_list`";
+	$sql = "SELECT `name`,`director` , `watched`, `recommended`, `rating` FROM `movies`";
 	// execute that statement
 	$query = $db->prepare( $sql );
 	$query->execute();

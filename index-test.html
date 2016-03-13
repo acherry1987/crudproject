@@ -98,26 +98,23 @@
 					jQuery(page).trigger('create');
 				}
 			}
-
-			function add_movie_to_list(movie, index, movie_array) {
-				console.log("Name: " + movie.name);
-			}
 			
-			function add_watched_movie_to_list(movie, index, movie_array) {
-				if (movie.watched == true) {
-					console.log("Name: " + movie.name + ", Director: " + movie.director + " watched: true");
-				}
+			function log_movie_info(movie, index, movie_array) {
+				console.log(JSON.stringify(movie));
 			}
 			
 			function get_all_movies() {
-				$.get("/php/read.php", function(data, status){
-        			console.log(JSON.stringify(data));
-        			if (data.message == 'success') {
-        			    data.data.forEach(add_watched_movie_to_list);
-        			} else {
-        				alert("Unable to get movies");
-        			}
-    			});
+				$.ajax({
+    				type: 'GET',
+    				url: '/php/read.php',
+    				success: function(msg) {
+						if (msg.message == 'success') {
+							msg.data.forEach(log_movie_info);
+						} else {
+							alert(msg.message);
+						}
+  					}
+  				});
 			}
 			
 			function add_movie(name, director, watched, recommended, rating) {

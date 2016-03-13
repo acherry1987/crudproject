@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>jQuery Mobile Template</title>
+		<meta name='viewport' content='width=device-width, initial-scale=1.0'>
+		<script src='//ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js'></script>
+		<script src='//ajax.googleapis.com/ajax/libs/jquerymobile/1.4.5/jquery.mobile.min.js'></script>
+		<link rel='stylesheet' href='//ajax.googleapis.com/ajax/libs/jquerymobile/1.4.5/jquery.mobile.min.css'>
+	</head>
+	<style>
+	html { 
+/*   		background: url(thewitch.jpg) no-repeat center center fixed;  */
+		background-color: "blue";
+  		-webkit-background-size: cover;
+  		-moz-background-size: cover;
+  		-o-background-size: cover;
+  		background-size: cover;
+		}
+		
+		.container { 
+			display: flex;
+			flex-wrap: wrap;
+		}
+		
+		header { 
+			background-color: "blue";
+			color: "yellow";
+		}
+	</style>
+	<body>
+	<div class="container">
+		<!-- PAGE -->
+		<div data-role='page' id='home'>
+			<!-- header -->
+			<div data-role='header' data-position='fixed'>
+				<h1>Home</h1>
+			</div>
+			<!-- content -->
+			<article>Hello, there </article>
+		</div>
+		<div data-role='page' id='movies'>
+			<!-- header -->
+			<div data-role='header' data-position='fixed'>
+				<h1>Your Movies</h1>
+			</div>
+			<!-- content -->
+			<article>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</article>
+		</div>
+
+		<div data-role='page' id='update'>
+			<!-- header -->
+			<div data-role='header' data-position='fixed'>
+				<h1>Update a Movie</h1>
+			</div>
+			<!-- content -->
+			<div>
+				<article id='about-article'>
+          something...
+				</article>
+			</div>
+		</div>
+
+		<div data-role='page' id='add'>
+			<!-- header -->
+			<div data-role='header' data-position='fixed'>
+				<h1>Add a Movie</h1>
+			</div>
+		</div>
+		<div data-role='page' id='delete'>
+			<!-- header -->
+			<div data-role='header' data-position='fixed'>
+				<h1>Delete</h1>
+			</div>
+		</div>
+	</div>
+
+		<!-- SCRIPT -->
+		<script>
+// 		document.body.style.background = url(thewitch.jpg);
+					// dynamically adds footer and navbar
+			function loadmenu( page ) {
+				// get handle on page
+				var page = document.querySelector( '#'+page );
+// 				page.style.backgroundColor = "#3498db";
+				// check if nav exists
+				if( !page.querySelector('div[data-role=footer]') ) {
+					console.log('nofooter');
+					// create it
+					var foot = document.createElement('div');
+					foot.setAttribute( 'data-role', 'footer' );
+					foot.setAttribute( 'data-position', 'fixed' );
+					var nav = document.createElement('div');
+					nav.setAttribute( 'data-role', 'navbar' );
+					var ul = document.createElement( 'ul' );
+					// LINKS
+					//// HOME
+					var li1 = document.createElement( 'li' );
+					var a = document.createElement( 'a' );
+					a.textContent = 'Home';
+					a.setAttribute( 'href', '#home' );
+					a.setAttribute( 'data-icon', 'home' );
+					document.body.style.backgroundImage = "url(thewitch.jpg)";
+					li1.appendChild( a );
+					//// ABOUT
+					var li2 = document.createElement( 'li' );
+					var a = document.createElement( 'a' );
+					a.textContent = 'Movies';
+					a.setAttribute( 'href', '#movies' );
+					a.setAttribute( 'data-icon', 'grid' );
+					li2.appendChild( a );
+					//// CONTACT
+					var li3 = document.createElement( 'li' );
+					var a = document.createElement( 'a' );
+					a.textContent = 'Add';
+					a.setAttribute( 'href', '#add' );
+					a.setAttribute( 'data-icon', 'plus' );
+					li3.appendChild( a );
+					var li4 = document.createElement( 'li' );
+					var a = document.createElement( 'a' );
+					a.textContent = 'Update';
+					a.setAttribute( 'href', '#update' );
+					a.setAttribute( 'data-icon', 'forward' );
+					li4.appendChild( a );
+					var li5 = document.createElement( 'li' );
+					var a = document.createElement( 'a' );
+					a.textContent = 'Delete';
+					a.setAttribute( 'href', '#delete' );
+					a.setAttribute( 'data-icon', 'delete' );
+					li5.appendChild( a );
+					//// AJAX
+					// var li4 = document.createElement( 'li' );
+					// var a = document.createElement( 'a' );
+					// a.textContent = 'AJAX';
+					// a.setAttribute( 'href', '#ajax' );
+					// a.setAttribute( 'data-icon', 'recycle' );
+					// li4.appendChild( a );
+					// append links
+					ul.appendChild( li1 );
+					ul.appendChild( li2 );
+					ul.appendChild( li3 );
+					ul.appendChild( li4 );
+					ul.appendChild( li5 );
+					// ul.appendChild( li4 );
+					// append list to nav to foot
+					nav.appendChild( ul );
+					foot.appendChild( nav );
+					page.appendChild( foot );
+					// trigger navbar initialization
+					jQuery(nav).navbar();
+					// trigger proper page creation for footer placement
+					jQuery(page).trigger('create');
+				}
+			}
+
+		// show home
+		$( '#home' ).on( 'pageshow', function(){
+				loadmenu('home');
+			});
+
+		// show about
+		$( '#movies' ).on( 'pageshow', function(){
+				loadmenu('movies');
+				// do plugin thing
+        // ...
+			});
+
+				// show contact
+		$( '#add' ).on( 'pageshow', function(){
+				loadmenu('add');
+			});
+		$( '#update' ).on( 'pageshow', function(){
+				loadmenu('update');
+			});
+		$( '#delete' ).on( 'pageshow', function(){
+				loadmenu('delete');
+			});
+
+		</script>
+	</body>
+</html>

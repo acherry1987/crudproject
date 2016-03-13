@@ -161,12 +161,16 @@
 		$( '#movies' ).on( 'pageshow', function(){
 				loadmenu('movies');
 				// do plugin thing
+				get_all_movies();
         // ...
 			});
 
 				// show contact
 		$( '#add' ).on( 'pageshow', function(){
 				loadmenu('add');
+				add_movie('Mad Max: Fury Road', 'George Miller', 0, 0, 6);
+				add_movie('Star Wars: The Force Awakens', 'J.J. Abrahms', 1, 1, 8);
+				add_movie('The Revenant', 'Alejandro González Iñárritu', 1, 1, 9);
 			});
 		$( '#update' ).on( 'pageshow', function(){
 				loadmenu('update');
@@ -174,6 +178,38 @@
 		$( '#delete' ).on( 'pageshow', function(){
 				loadmenu('delete');
 			});
+			
+		function log_movie_info(movie, index, movie_array) {
+				console.log(JSON.stringify(movie));
+			}
+			
+			function get_all_movies() {
+				$.ajax({
+    				type: 'GET',
+    				url: '/php/read.php',
+    				success: function(msg) {
+						if (msg.message == 'success') {
+							msg.data.forEach(log_movie_info);
+						} else {
+							alert(msg.message);
+						}
+  					}
+  				});
+			}
+
+		function add_movie(name, director, watched, recommended, rating) {
+				$.ajax({
+    				type: 'POST',
+    				url: '/php/create.php',
+    				dataType: 'json',
+					data: {'name': name, 'director': director, 'watched': watched, 'recommended': recommended, 'rating': rating},
+					success: function(msg) {
+						if (msg.message != 'success') {
+							alert(msg.data);
+						}
+  					}
+  				});
+			}
 
 		</script>
 	</body>

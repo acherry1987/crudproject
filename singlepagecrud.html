@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Single-page CRUD</title>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script>
+	<style>
+		body {
+			display: flex;
+			flex-flow: row;
+			justify-content: space-around;
+		}
+		#input, #output {
+			border: 1px solid grey;
+		}
+		#input {
+
+		}
+		#output {
+
+		}
+	</style>
+</head>
+<body>
+	<div id='input'>
+		<form id='query'>
+			<input type='text' name='location' />
+			<input type='button' id='q' value='Query' />
+		</form>
+	</div>
+	<div id='output'>
+	</div>
+	<script>
+		// add an event listener to the query button
+		$('#q').on( 'click', pressed );
+
+
+		// when the button is pressed...
+		function pressed(ev) {
+			// get the city
+			var city = $('*[name=location]').val();
+			// send an ajax call to get the weather
+			$.ajax({
+				url: '',
+				dataType: 'json'
+			}).done(function(data){
+				console.log(data);
+			}).fail(function(){
+				console.log("Sorry!");
+			});
+			// dispay the weather in the #output block
+		}
+	</script>
+</body>
+</html>

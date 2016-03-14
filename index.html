@@ -1,21 +1,32 @@
 <!DOCTYPE html>
 <html>
 	<head>
-		<title>jQuery Mobile Template</title>
+		<title>Your Movie List</title>
 		<meta name='viewport' content='width=device-width, initial-scale=1.0'>
 		<script src='//ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js'></script>
 		<script src='//ajax.googleapis.com/ajax/libs/jquerymobile/1.4.5/jquery.mobile.min.js'></script>
 		<link rel='stylesheet' href='//ajax.googleapis.com/ajax/libs/jquerymobile/1.4.5/jquery.mobile.min.css'>
 	</head>
 	<style>
-	html { 
-/*   		background: url(thewitch.jpg) no-repeat center center fixed;  */
-		background-color: "blue";
+	#home { 
+  		background: url(thewitch.jpg) no-repeat center center fixed; 
+
   		-webkit-background-size: cover;
   		-moz-background-size: cover;
   		-o-background-size: cover;
   		background-size: cover;
 		}
+		.ui-page {
+    		background: transparent;
+		}
+	#movies { 
+		color: tomato;
+		}
+		.ui-content{
+    		background: transparent;
+		}
+
+
 		
 		.container { 
 			display: flex;
@@ -26,8 +37,27 @@
 			background-color: "blue";
 			color: "blue";
 		}
+		p { 
+			color: white;
+		}
+		
+		li { 
+			text-align: center;
+			list-style: none;
+		}
+		
+		#movielist { 
+			display: flex; 
+			align-items: center;
+			justify-content: space-between;
+			flex-wrap: wrap;
+			padding: 20px;
+		}
+		
 	</style>
 	<body>
+	
+	
 	<div class="container">
 		<!-- PAGE -->
 		<div data-role='page' id='home'>
@@ -36,15 +66,19 @@
 				<h1>Home</h1>
 			</div>
 			<!-- content -->
-			<article>Hello, there </article>
+			<p>Hello, there <p>
 		</div>
 		<div data-role='page' id='movies'>
 			<!-- header -->
 			<div data-role='header' data-position='fixed'>
 				<h1>Your Movies</h1>
 			</div>
+			<div class="moviescontain">
+				<ul id="movielist">
+				</ul>
+			</div>
 			<!-- content -->
-			<article>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</article>
+			<article>.</article>
 		</div>
 
 		<div data-role='page' id='update'>
@@ -52,7 +86,7 @@
 			<div data-role='header' data-position='fixed'>
 				<h1>Update a Movie</h1>
 			</div>
-			<!-- content -->
+			<p> update some stuff yo <p>
 			<div>
 				<article id='about-article'>
           something...
@@ -71,12 +105,30 @@
 			<div data-role='header' data-position='fixed'>
 				<h1>Delete</h1>
 			</div>
+			<div>
+				<form>
+  					Move Name:<br>
+  					<input type="text" name="deletemoviename"><br>
+				</form>
+			</div>
+			<div class="button">
+        		<button type="button" onclick="onDeleteMovie()">Delete Movie</button>
+      		</div>
 		</div>
 	</div>
 
 		<!-- SCRIPT -->
 		<script>
-// 		document.body.style.background = url(thewitch.jpg);
+			function onDeleteMovie() {
+				// Get the movie name from the test box
+				var moviename = $('[name=deletemoviename]').val();
+				if (moviename) {
+					// Do the actual delete
+					delete_movie(moviename);
+				} else {
+					alert("Please enter a movie name to delete");
+				}
+			}
 					// dynamically adds footer and navbar
 			function loadmenu( page ) {
 				// get handle on page
@@ -99,7 +151,7 @@
 					a.textContent = 'Home';
 					a.setAttribute( 'href', '#home' );
 					a.setAttribute( 'data-icon', 'home' );
-					document.body.style.backgroundImage = "url(thewitch.jpg)";
+					// document.body.style.backgroundImage = "url(thewitch.jpg)";
 					li1.appendChild( a );
 					//// ABOUT
 					var li2 = document.createElement( 'li' );
@@ -162,6 +214,7 @@
 				loadmenu('movies');
 				// do plugin thing
 				get_all_movies();
+// 				add_movie_to_list();
         // ...
 			});
 
@@ -169,8 +222,6 @@
 		$( '#add' ).on( 'pageshow', function(){
 				loadmenu('add');
 				add_movie('Mad Max: Fury Road', 'George Miller', 0, 0, 6);
-				add_movie('Star Wars: The Force Awakens', 'J.J. Abrahms', 1, 1, 8);
-				add_movie('The Revenant', 'Alejandro González Iñárritu', 1, 1, 9);
 			});
 		$( '#update' ).on( 'pageshow', function(){
 				loadmenu('update');
@@ -179,8 +230,16 @@
 				loadmenu('delete');
 			});
 			
-		function log_movie_info(movie, index, movie_array) {
-				console.log(JSON.stringify(movie));
+		function isEmpty(obj) {
+    		return Object.keys(obj).length === 0;
+		}
+
+		function add_movie_to_list(movie, index, movie_array) {
+				if (movie) {
+ 					console.log(JSON.stringify(movie));
+					// Add the movie to the list node
+					$("#movielist").append("<li>" + movie.name + "</li>");
+				}
 			}
 			
 			function get_all_movies() {
@@ -189,7 +248,9 @@
     				url: '/php/read.php',
     				success: function(msg) {
 						if (msg.message == 'success') {
-							msg.data.forEach(log_movie_info);
+							// Clear the list before adding
+							$("#movielist").empty();
+							msg.data.forEach(add_movie_to_list);
 						} else {
 							alert(msg.message);
 						}
@@ -203,6 +264,35 @@
     				url: '/php/create.php',
     				dataType: 'json',
 					data: {'name': name, 'director': director, 'watched': watched, 'recommended': recommended, 'rating': rating},
+					success: function(msg) {
+						if (msg.message != 'success') {
+							alert(msg.data);
+						}
+  					}
+  				});
+			}
+
+			function update_movie(name, watched, recommended, rating) {
+				$.ajax({
+    				type: 'POST',
+    				url: '/php/update.php',
+    				dataType: 'json',
+					data: {'name': name, 'watched': watched, 'recommended': recommended, 'rating': rating},
+					success: function(msg) {
+						if (msg.message != 'success') {
+							alert(msg.data);
+						}
+  					}
+  				});
+			}
+
+			function delete_movie(name) {
+				console.log("Deleting movie " + name);
+				$.ajax({
+    				type: 'POST',
+    				url: '/php/delete.php',
+    				dataType: 'json',
+					data: {'name': name},
 					success: function(msg) {
 						if (msg.message != 'success') {
 							alert(msg.data);

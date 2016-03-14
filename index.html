@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 	<head>
-		<title>Your Movie List</title>
+		<title>Your Movie Database</title>
 		<meta name='viewport' content='width=device-width, initial-scale=1.0'>
 		<script src='//ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js'></script>
 		<script src='//ajax.googleapis.com/ajax/libs/jquerymobile/1.4.5/jquery.mobile.min.js'></script>
@@ -52,6 +52,7 @@
 			justify-content: space-between;
 			flex-wrap: wrap;
 			padding: 20px;
+			flex-direction: column;
 		}
 		
 	</style>
@@ -68,6 +69,10 @@
 			<!-- content -->
 			<p>Hello, there <p>
 		</div>
+		
+
+	<!-- ////////// Movie List //////// -->
+
 		<div data-role='page' id='movies'>
 			<!-- header -->
 			<div data-role='header' data-position='fixed'>
@@ -81,25 +86,55 @@
 			<article>.</article>
 		</div>
 
+
+	<!-- //////// UPDATE /////// -->
+
 		<div data-role='page' id='update'>
 			<!-- header -->
 			<div data-role='header' data-position='fixed'>
 				<h1>Update a Movie</h1>
 			</div>
 			<p> update some stuff yo <p>
-			<div>
-				<article id='about-article'>
-          something...
-				</article>
-			</div>
+			<form>
+  				Movie Name:<br>
+  					<input type="text" placeholder="Example - The Revenant" name="updatemoviename"><br>
+  				<!-- 
+Movie Director:<br>
+  					<input type="text" placeholder="Example - James Cameron" name="updatemoviedirector"><br>
+ -->
+  				Movie Rating:<br>
+  					<input type="text" placeholder="1 - 10" name="updatemovierating"><br>
+				</form>
+				<div class="button">
+        		<button type="button" onclick="onUpdateMovie()">Update</button>
+      		</div>
 		</div>
+		
+<!-- 		//////// ADD //////// -->
 
 		<div data-role='page' id='add'>
 			<!-- header -->
 			<div data-role='header' data-position='fixed'>
 				<h1>Add a Movie</h1>
 			</div>
+				<form>
+  				Movie Name:<br>
+  					<input type="text" placeholder="Example - The Revenant" name="addmoviename"><br>
+  				Movie Director:<br>
+  					<input type="text" placeholder="Example - James Cameron" name="addmoviedirector"><br>
+
+  				Movie Rating:<br>
+  					<input type="text" placeholder="1 - 10" name="addmovierating"><br>
+				</form>
+				<div class="button">
+        		<button type="button" onclick="onAddMovie()">Add</button>
+      		</div>
 		</div>
+		
+		
+		
+<!-- 	//////// Delete ////  -->
+		
 		<div data-role='page' id='delete'>
 			<!-- header -->
 			<div data-role='header' data-position='fixed'>
@@ -116,9 +151,15 @@
       		</div>
 		</div>
 	</div>
+	
+	
+	
 
 		<!-- SCRIPT -->
 		<script>
+		
+			// Delete movie function
+		
 			function onDeleteMovie() {
 				// Get the movie name from the test box
 				var moviename = $('[name=deletemoviename]').val();
@@ -129,6 +170,40 @@
 					alert("Please enter a movie name to delete");
 				}
 			}
+			
+			// add movie function 
+			
+			function onAddMovie() {
+				// Get the movie name from the test box
+				var moviename = $('[name=addmoviename]').val();
+				var moviedirector = $('[name=addmoviedirector]').val();
+				var movierating = $('[name=addmovierating]').val();
+				if (moviename) {
+					// Do the add
+					add_movie(moviename, moviedirector, movierating);
+				} else {
+					alert("Please enter a movie name to delete");
+				}
+			}
+			
+			
+			function onUpdateMovie() {
+				// Get the movie name from the test box
+				var moviename = $('[name=updatemoviename]').val();
+				var moviedirector = $('[name=updatemoviedirector]').val();
+				var movierating = $('[name=updatemovierating]').val();
+				if (moviename) {
+					// Do the update
+					update_movie(moviename, null, null, movierating);
+				} else {
+					alert("Please Update Something!");
+				}
+			}
+			
+			
+			
+					
+			
 					// dynamically adds footer and navbar
 			function loadmenu( page ) {
 				// get handle on page
@@ -243,6 +318,7 @@
 			}
 			
 			function get_all_movies() {
+			// reading from the database - the "R" in CRUD
 				$.ajax({
     				type: 'GET',
     				url: '/php/read.php',
@@ -258,7 +334,8 @@
   				});
 			}
 
-		function add_movie(name, director, watched, recommended, rating) {
+			function add_movie(name, director, watched, recommended, rating) {
+			// creating the objects in the database - the "C" in Crud
 				$.ajax({
     				type: 'POST',
     				url: '/php/create.php',
@@ -273,6 +350,7 @@
 			}
 
 			function update_movie(name, watched, recommended, rating) {
+			// updating the database - the "U" in Crud
 				$.ajax({
     				type: 'POST',
     				url: '/php/update.php',
@@ -287,6 +365,7 @@
 			}
 
 			function delete_movie(name) {
+			// deleting objects in database - the "D" in Crud
 				console.log("Deleting movie " + name);
 				$.ajax({
     				type: 'POST',

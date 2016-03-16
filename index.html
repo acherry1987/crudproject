@@ -9,7 +9,7 @@
 	</head>
 	<style>
 	#home { 
-  		background: url(thewitch.jpg) no-repeat center center fixed; 
+  		background: url(dragontattoo.jpeg) no-repeat center center; 
 
   		-webkit-background-size: cover;
   		-moz-background-size: cover;
@@ -59,6 +59,8 @@
 	<body>
 	
 	
+	<!-- //////////// HOME //////////  --> <!-- $.mobile.changepage -->
+	
 	<div class="container">
 		<!-- PAGE -->
 		<div data-role='page' id='home'>
@@ -72,10 +74,10 @@
 		
 
 	<!-- ////////// Movie List //////// -->
-
+	
 		<div data-role='page' id='movies'>
 			<!-- header -->
-			<div data-role='header' data-position='fixed'>
+			<div data-role='header' data-position='fixed' data-theme="b">
 				<h1>Your Movies</h1>
 			</div>
 			<div class="moviescontain">
@@ -85,7 +87,7 @@
 			<!-- content -->
 			<article>.</article>
 		</div>
-
+	
 
 	<!-- //////// UPDATE /////// -->
 
@@ -254,6 +256,7 @@ Movie Director:<br>
 					a.setAttribute( 'href', '#delete' );
 					a.setAttribute( 'data-icon', 'delete' );
 					li5.appendChild( a );
+					
 					//// AJAX
 					// var li4 = document.createElement( 'li' );
 					// var a = document.createElement( 'a' );

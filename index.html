@@ -6,6 +6,7 @@
 		<script src='//ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js'></script>
 		<script src='//ajax.googleapis.com/ajax/libs/jquerymobile/1.4.5/jquery.mobile.min.js'></script>
 		<link rel='stylesheet' href='//ajax.googleapis.com/ajax/libs/jquerymobile/1.4.5/jquery.mobile.min.css'>
+		<link rel="stylesheet" type="text/css" href="http://fonts.googleapis.com/css?family=Roboto:100">
 	</head>
 	<style>
 	#home { 
@@ -54,6 +55,12 @@
 			padding: 20px;
 			flex-direction: column;
 		}
+		
+		h1 { 
+			font-family: 'Roboto';
+			font-size: 100px;
+		}
+		
 		
 	</style>
 	<body>
@@ -180,9 +187,11 @@ Movie Director:<br>
 				var moviename = $('[name=addmoviename]').val();
 				var moviedirector = $('[name=addmoviedirector]').val();
 				var movierating = $('[name=addmovierating]').val();
+				
 				if (moviename) {
 					// Do the add
 					add_movie(moviename, moviedirector, movierating);
+					$.mobile.changePage('#movies');
 				} else {
 					alert("Please enter a movie name to delete");
 				}
@@ -250,12 +259,14 @@ Movie Director:<br>
 					a.setAttribute( 'href', '#update' );
 					a.setAttribute( 'data-icon', 'forward' );
 					li4.appendChild( a );
+					a.style.fontFamily = 'Roboto';
 					var li5 = document.createElement( 'li' );
 					var a = document.createElement( 'a' );
 					a.textContent = 'Delete';
 					a.setAttribute( 'href', '#delete' );
 					a.setAttribute( 'data-icon', 'delete' );
 					li5.appendChild( a );
+					a.style.fontFamily = 'Roboto';
 					
 					//// AJAX
 					// var li4 = document.createElement( 'li' );

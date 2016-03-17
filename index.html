@@ -7,62 +7,8 @@
 		<script src='//ajax.googleapis.com/ajax/libs/jquerymobile/1.4.5/jquery.mobile.min.js'></script>
 		<link rel='stylesheet' href='//ajax.googleapis.com/ajax/libs/jquerymobile/1.4.5/jquery.mobile.min.css'>
 		<link rel="stylesheet" type="text/css" href="http://fonts.googleapis.com/css?family=Roboto:100">
+		<link rel="stylesheet" type="text/css" href="css/style.css">
 	</head>
-	<style>
-	#home { 
-  		background: url(dragontattoo.jpeg) no-repeat center center; 
-
-  		-webkit-background-size: cover;
-  		-moz-background-size: cover;
-  		-o-background-size: cover;
-  		background-size: cover;
-		}
-		.ui-page {
-    		background: transparent;
-		}
-	#movies { 
-		color: tomato;
-		}
-		.ui-content{
-    		background: transparent;
-		}
-
-
-		
-		.container { 
-			display: flex;
-			flex-wrap: wrap;
-		}
-		
-		header { 
-			background-color: "blue";
-			color: "blue";
-		}
-		p { 
-			color: white;
-		}
-		
-		li { 
-			text-align: center;
-			list-style: none;
-		}
-		
-		#movielist { 
-			display: flex; 
-			align-items: center;
-			justify-content: space-between;
-			flex-wrap: wrap;
-			padding: 20px;
-			flex-direction: column;
-		}
-		
-		h1 { 
-			font-family: 'Roboto';
-			font-size: 100px;
-		}
-		
-		
-	</style>
 	<body>
 	
 	
@@ -75,8 +21,14 @@
 			<div data-role='header' data-position='fixed'>
 				<h1>Home</h1>
 			</div>
+			<h1> Movie List </h1>
 			<!-- content -->
-			<p>Hello, there <p>
+			<div class="textcontain">
+			<p>Welcome to Movie List. Movie List is an website that allows you to 
+			add the movies you've watched and assign a rating to them.  This site is 
+			geared toward the hardcore movie buff who wants to know how many movies he has
+			watched.<p>
+			</div>
 		</div>
 		
 
@@ -103,14 +55,10 @@
 			<div data-role='header' data-position='fixed'>
 				<h1>Update a Movie</h1>
 			</div>
-			<p> update some stuff yo <p>
 			<form>
   				Movie Name:<br>
   					<input type="text" placeholder="Example - The Revenant" name="updatemoviename"><br>
-  				<!-- 
-Movie Director:<br>
-  					<input type="text" placeholder="Example - James Cameron" name="updatemoviedirector"><br>
- -->
+  			
   				Movie Rating:<br>
   					<input type="text" placeholder="1 - 10" name="updatemovierating"><br>
 				</form>
@@ -175,6 +123,7 @@ Movie Director:<br>
 				if (moviename) {
 					// Do the actual delete
 					delete_movie(moviename);
+					$.mobile.changePage('#movies');
 				} else {
 					alert("Please enter a movie name to delete");
 				}
@@ -201,11 +150,12 @@ Movie Director:<br>
 			function onUpdateMovie() {
 				// Get the movie name from the test box
 				var moviename = $('[name=updatemoviename]').val();
-				var moviedirector = $('[name=updatemoviedirector]').val();
+				// var moviedirector = $('[name=updatemoviedirector]').val();
 				var movierating = $('[name=updatemovierating]').val();
 				if (moviename) {
 					// Do the update
 					update_movie(moviename, null, null, movierating);
+					$.mobile.changePage('#movies');
 				} else {
 					alert("Please Update Something!");
 				}
@@ -239,6 +189,7 @@ Movie Director:<br>
 					a.setAttribute( 'data-icon', 'home' );
 					// document.body.style.backgroundImage = "url(thewitch.jpg)";
 					li1.appendChild( a );
+					a.style.fontFamily = 'Roboto';
 					//// ABOUT
 					var li2 = document.createElement( 'li' );
 					var a = document.createElement( 'a' );
@@ -246,6 +197,7 @@ Movie Director:<br>
 					a.setAttribute( 'href', '#movies' );
 					a.setAttribute( 'data-icon', 'grid' );
 					li2.appendChild( a );
+					a.style.fontFamily = 'Roboto';
 					//// CONTACT
 					var li3 = document.createElement( 'li' );
 					var a = document.createElement( 'a' );
@@ -253,6 +205,7 @@ Movie Director:<br>
 					a.setAttribute( 'href', '#add' );
 					a.setAttribute( 'data-icon', 'plus' );
 					li3.appendChild( a );
+					a.style.fontFamily = 'Roboto';
 					var li4 = document.createElement( 'li' );
 					var a = document.createElement( 'a' );
 					a.textContent = 'Update';

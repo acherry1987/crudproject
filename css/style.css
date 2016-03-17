@@ -1,0 +1,80 @@
+#home { 
+  		background: url(/movieback.jpg) no-repeat center center; 
+
+  		-webkit-background-size: cover;
+  		-moz-background-size: cover;
+  		-o-background-size: cover;
+  		background-size: cover;
+		}
+		.ui-page {
+    		background: transparent;
+		}
+		 
+	#movies { 
+		color: tomato;
+		}
+		.ui-content{
+    		background: transparent;
+		}
+
+		.textcontain { 
+			max-width: 30%;
+			padding-left: 30px;
+		}
+
+		
+		.container { 
+			display: flex;
+			flex-wrap: wrap;
+		}
+		
+		p { 
+			color: black;
+			font-family: 'Roboto';
+		}
+		
+		li { 
+			text-align: center;
+			list-style: none;
+		}
+		
+		#movielist { 
+			display: flex; 
+			align-items: center;
+			justify-content: space-between;
+			flex-wrap: wrap;
+			padding: 20px;
+			flex-direction: column;
+		}
+		
+		h1 { 
+			font-family: 'Roboto';
+			font-size: 4em;
+			padding-left: 30px;
+		}
+		
+		button { 
+			max-width: 50%;
+			text-align: center;
+		}
+		
+		input { 
+			max-width: 60%;
+			text-align: center;
+		}
+
+@media screen and (max-width: 500px) {
+
+  .textcontain {
+
+    align-items: center;
+    font-color:white;
+
+  }
+  
+   h1 { 
+   	font-color: white;
+   	text-align: center;
+   }
+}
+		

@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Your Movie Database</title>
+		<meta name='viewport' content='width=device-width, initial-scale=1.0'>
+		<script src='//ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js'></script>
+		<script src='//ajax.googleapis.com/ajax/libs/jquerymobile/1.4.5/jquery.mobile.min.js'></script>
+		<link rel='stylesheet' href='//ajax.googleapis.com/ajax/libs/jquerymobile/1.4.5/jquery.mobile.min.css'>
+		<link rel="stylesheet" type="text/css" href="http://fonts.googleapis.com/css?family=Roboto:100">
+		<link rel="stylesheet" type="text/css" href="css/style.css">
+	</head>
+	<body>
+	
+	
+	<!-- //////////// HOME //////////  --> <!-- $.mobile.changepage -->
+<div class="sitewrapper">
+	<div class="container">
+		<!-- PAGE -->
+		<div data-role='page' id='home'>
+			<!-- header -->
+			<div data-role='header' data-position='fixed'>
+				<h1>Home</h1>
+			</div>
+			
+			<div class="titlecontain">
+				<h1> Movie List </h1>
+			</div>
+			<!-- content -->
+			<div class="textcontain">
+			<p>Welcome to Movie List. Movie List is an website that allows you to 
+			add the movies you've watched and assign a rating to them.  This site is 
+			geared toward the hardcore movie buff who wants to know how many movies he has
+			watched.<p>
+			</div>
+		</div>
+		
+
+	<!-- ////////// Movie List //////// -->
+	
+		<div data-role='page' id='movies'>
+			<!-- header -->
+			<div data-role='header' data-position='fixed' data-theme="b">
+				<h1>Your Movies</h1>
+			</div>
+			<div class="moviescontain">
+				<ul id="movielist">
+				</ul>
+			</div>
+			<!-- content -->
+			<article>.</article>
+		</div>
+	
+
+	<!-- //////// UPDATE /////// -->
+
+		<div data-role='page' id='update'>
+			<!-- header -->
+			<div data-role='header' data-position='fixed'>
+				<h1>Update a Movie</h1>
+			</div>
+			<form>
+  				Movie Name:<br>
+  					<input type="text" placeholder="Example - The Revenant" name="updatemoviename"><br>
+  			
+  				Movie Rating:<br>
+  					<input type="text" placeholder="1 - 10" name="updatemovierating"><br>
+				</form>
+				<div class="button">
+        		<button type="button" onclick="onUpdateMovie()">Update</button>
+      		</div>
+		</div>
+		
+<!-- 		//////// ADD //////// -->
+
+		<div data-role='page' id='add'>
+			<!-- header -->
+			<div data-role='header' data-position='fixed'>
+				<h1>Add a Movie</h1>
+			</div>
+				<form>
+  				Movie Name:<br>
+  					<input type="text" placeholder="Example - The Revenant" name="addmoviename"><br>
+  				Movie Director:<br>
+  					<input type="text" placeholder="Example - James Cameron" name="addmoviedirector"><br>
+
+  				Movie Rating:<br>
+  					<input type="text" placeholder="1 - 10" name="addmovierating"><br>
+				</form>
+				<div class="button">
+        		<button type="button" onclick="onAddMovie()">Add</button>
+      		</div>
+		</div>
+		
+		
+		
+<!-- 	//////// Delete ////  -->
+		
+		<div data-role='page' id='delete'>
+			<!-- header -->
+			<div data-role='header' data-position='fixed'>
+				<h1>Delete</h1>
+			</div>
+			<div>
+				<form>
+  					Move Name:<br>
+  					<input type="text" name="deletemoviename"><br>
+				</form>
+			</div>
+			<div class="button">
+        		<button type="button" onclick="onDeleteMovie()">Delete Movie</button>
+      		</div>
+		</div>
+	</div>
+</div>
+	
+	
+
+		<!-- SCRIPT -->
+		<script>
+		
+			// Delete movie function
+		
+			function onDeleteMovie() {
+				// Get the movie name from the test box
+				var moviename = $('[name=deletemoviename]').val();
+				if (moviename) {
+					// Do the actual delete
+					delete_movie(moviename);
+					$.mobile.changePage('#movies');
+				} else {
+					alert("Please enter a movie name to delete");
+				}
+			}
+			
+			// add movie function 
+			
+			function onAddMovie() {
+				// Get the movie name from the test box
+				var moviename = $('[name=addmoviename]').val();
+				var moviedirector = $('[name=addmoviedirector]').val();
+				var movierating = $('[name=addmovierating]').val();
+				
+				if (moviename) {
+					// Do the add
+					add_movie(moviename, moviedirector, movierating);
+					$.mobile.changePage('#movies');
+				} else {
+					alert("Please enter a movie name to delete");
+				}
+			}
+			
+			
+			function onUpdateMovie() {
+				// Get the movie name from the test box
+				var moviename = $('[name=updatemoviename]').val();
+				// var moviedirector = $('[name=updatemoviedirector]').val();
+				var movierating = $('[name=updatemovierating]').val();
+				if (moviename) {
+					// Do the update
+					update_movie(moviename, null, null, movierating);
+					$.mobile.changePage('#movies');
+				} else {
+					alert("Please Update Something!");
+				}
+			}
+			
+			
+			
+					
+			
+					// dynamically adds footer and navbar
+			function loadmenu( page ) {
+				// get handle on page
+				var page = document.querySelector( '#'+page );
+// 				page.style.backgroundColor = "#3498db";
+				// check if nav exists
+				if( !page.querySelector('div[data-role=footer]') ) {
+					console.log('nofooter');
+					// create it
+					var foot = document.createElement('div');
+					foot.setAttribute( 'data-role', 'footer' );
+					foot.setAttribute( 'data-position', 'fixed' );
+					var nav = document.createElement('div');
+					nav.setAttribute( 'data-role', 'navbar' );
+					var ul = document.createElement( 'ul' );
+					// LINKS
+					//// HOME
+					var li1 = document.createElement( 'li' );
+					var a = document.createElement( 'a' );
+					a.textContent = 'Home';
+					a.setAttribute( 'href', '#home' );
+					a.setAttribute( 'data-icon', 'home' );
+					// document.body.style.backgroundImage = "url(thewitch.jpg)";
+					li1.appendChild( a );
+					a.style.fontFamily = 'Roboto';
+					//// ABOUT
+					var li2 = document.createElement( 'li' );
+					var a = document.createElement( 'a' );
+					a.textContent = 'Movies';
+					a.setAttribute( 'href', '#movies' );
+					a.setAttribute( 'data-icon', 'grid' );
+					li2.appendChild( a );
+					a.style.fontFamily = 'Roboto';
+					//// CONTACT
+					var li3 = document.createElement( 'li' );
+					var a = document.createElement( 'a' );
+					a.textContent = 'Add';
+					a.setAttribute( 'href', '#add' );
+					a.setAttribute( 'data-icon', 'plus' );
+					li3.appendChild( a );
+					a.style.fontFamily = 'Roboto';
+					var li4 = document.createElement( 'li' );
+					var a = document.createElement( 'a' );
+					a.textContent = 'Update';
+					a.setAttribute( 'href', '#update' );
+					a.setAttribute( 'data-icon', 'forward' );
+					li4.appendChild( a );
+					a.style.fontFamily = 'Roboto';
+					var li5 = document.createElement( 'li' );
+					var a = document.createElement( 'a' );
+					a.textContent = 'Delete';
+					a.setAttribute( 'href', '#delete' );
+					a.setAttribute( 'data-icon', 'delete' );
+					li5.appendChild( a );
+					a.style.fontFamily = 'Roboto';
+					
+					//// AJAX
+					// var li4 = document.createElement( 'li' );
+					// var a = document.createElement( 'a' );
+					// a.textContent = 'AJAX';
+					// a.setAttribute( 'href', '#ajax' );
+					// a.setAttribute( 'data-icon', 'recycle' );
+					// li4.appendChild( a );
+					// append links
+					ul.appendChild( li1 );
+					ul.appendChild( li2 );
+					ul.appendChild( li3 );
+					ul.appendChild( li4 );
+					ul.appendChild( li5 );
+					// ul.appendChild( li4 );
+					// append list to nav to foot
+					nav.appendChild( ul );
+					foot.appendChild( nav );
+					page.appendChild( foot );
+					// trigger navbar initialization
+					jQuery(nav).navbar();
+					// trigger proper page creation for footer placement
+					jQuery(page).trigger('create');
+				}
+			}
+
+		// show home
+		$( '#home' ).on( 'pageshow', function(){
+				loadmenu('home');
+			});
+
+		// show about
+		$( '#movies' ).on( 'pageshow', function(){
+				loadmenu('movies');
+				// do plugin thing
+				get_all_movies();
+// 				add_movie_to_list();
+        // ...
+			});
+
+				// show contact
+		$( '#add' ).on( 'pageshow', function(){
+				loadmenu('add');
+				add_movie('Mad Max: Fury Road', 'George Miller', 0, 0, 6);
+			});
+		$( '#update' ).on( 'pageshow', function(){
+				loadmenu('update');
+			});
+		$( '#delete' ).on( 'pageshow', function(){
+				loadmenu('delete');
+			});
+			
+		function isEmpty(obj) {
+    		return Object.keys(obj).length === 0;
+		}
+
+		function add_movie_to_list(movie, index, movie_array) {
+				if (movie) {
+ 					console.log(JSON.stringify(movie));
+					// Add the movie to the list node
+					$("#movielist").append("<li>" + movie.name + "</li>");
+				}
+			}
+			
+			function get_all_movies() {
+			// reading from the database - the "R" in CRUD
+				$.ajax({
+    				type: 'GET',
+    				url: '/php/read.php',
+    				success: function(msg) {
+						if (msg.message == 'success') {
+							// Clear the list before adding
+							$("#movielist").empty();
+							msg.data.forEach(add_movie_to_list);
+						} else {
+							alert(msg.message);
+						}
+  					}
+  				});
+			}
+
+			function add_movie(name, director, watched, recommended, rating) {
+			// creating the objects in the database - the "C" in Crud
+				$.ajax({
+    				type: 'POST',
+    				url: '/php/create.php',
+    				dataType: 'json',
+					data: {'name': name, 'director': director, 'watched': watched, 'recommended': recommended, 'rating': rating},
+					success: function(msg) {
+						if (msg.message != 'success') {
+							alert(msg.data);
+						}
+  					}
+  				});
+			}
+
+			function update_movie(name, watched, recommended, rating) {
+			// updating the database - the "U" in Crud
+				$.ajax({
+    				type: 'POST',
+    				url: '/php/update.php',
+    				dataType: 'json',
+					data: {'name': name, 'watched': watched, 'recommended': recommended, 'rating': rating},
+					success: function(msg) {
+						if (msg.message != 'success') {
+							alert(msg.data);
+						}
+  					}
+  				});
+			}
+
+			function delete_movie(name) {
+			// deleting objects in database - the "D" in Crud
+				console.log("Deleting movie " + name);
+				$.ajax({
+    				type: 'POST',
+    				url: '/php/delete.php',
+    				dataType: 'json',
+					data: {'name': name},
+					success: function(msg) {
+						if (msg.message != 'success') {
+							alert(msg.data);
+						}
+  					}
+  				});
+			}
+
+		</script>
+	</body>
+</html>

@@ -13,7 +13,7 @@
 	
 	
 	<!-- //////////// HOME //////////  --> <!-- $.mobile.changepage -->
-	
+<div class="sitewrapper">
 	<div class="container">
 		<!-- PAGE -->
 		<div data-role='page' id='home'>
@@ -21,7 +21,10 @@
 			<div data-role='header' data-position='fixed'>
 				<h1>Home</h1>
 			</div>
-			<h1> Movie List </h1>
+			
+			<div class="titlecontain">
+				<h1> Movie List </h1>
+			</div>
 			<!-- content -->
 			<div class="textcontain">
 			<p>Welcome to Movie List. Movie List is an website that allows you to 
@@ -108,7 +111,7 @@
       		</div>
 		</div>
 	</div>
-	
+</div>
 	
 	
 
@@ -263,7 +266,6 @@
 				// show contact
 		$( '#add' ).on( 'pageshow', function(){
 				loadmenu('add');
-				add_movie('Mad Max: Fury Road', 'George Miller', 0, 0, 6);
 			});
 		$( '#update' ).on( 'pageshow', function(){
 				loadmenu('update');

@@ -70,6 +70,26 @@
       		</div>
 		</div>
 		
+<!-- 		//////// SEARCH //////// -->
+
+		<div data-role='page' id='search'>
+			<!-- header -->
+			<div data-role='header' data-position='fixed'>
+				<h1>Search for a Movie</h1>
+			</div>
+				<form>
+  				Movie Name:<br>
+  					<input type="text" placeholder="Example - The Revenant" name="addmoviename"><br>
+				</form>
+				<div class="button">
+        		<button type="button" onclick="#"> Search</button>
+      		</div>
+		</div>	
+		
+		
+		
+	
+		
 <!-- 		//////// ADD //////// -->
 
 		<div data-role='page' id='add'>
@@ -223,6 +243,14 @@
 					a.setAttribute( 'data-icon', 'delete' );
 					li5.appendChild( a );
 					a.style.fontFamily = 'Roboto';
+					var li6 = document.createElement( 'li' );
+					var a = document.createElement( 'a' );
+					a.textContent = 'Search';
+					a.setAttribute( 'href', '#search' );
+					a.setAttribute( 'data-icon', 'search' );
+					li6.appendChild( a );
+					a.style.fontFamily = 'Roboto';
+					
 					
 					//// AJAX
 					// var li4 = document.createElement( 'li' );
@@ -237,6 +265,7 @@
 					ul.appendChild( li3 );
 					ul.appendChild( li4 );
 					ul.appendChild( li5 );
+					ul.appendChild( li6 );
 					// ul.appendChild( li4 );
 					// append list to nav to foot
 					nav.appendChild( ul );
@@ -271,6 +300,9 @@
 			});
 		$( '#delete' ).on( 'pageshow', function(){
 				loadmenu('delete');
+			});
+		$( '#search' ).on( 'pageshow', function(){
+				loadmenu('search');
 			});
 			
 		function isEmpty(obj) {

@@ -79,11 +79,9 @@
 			</div>
 				<form>
   				Movie Name:<br>
-  					<input type="text" placeholder="Example - The Revenant" name="addmoviename"><br>
+  					<input type="text" placeholder="Example - The Revenant" name="searchmoviename"><br>
 				</form>
-				<div class="button">
-        		<button type="button" onclick="#"> Search</button>
-      		</div>
+				<div class="button"><button type="button" onclick="onSearchMovie()"> Search</button></div>
 		</div>	
 		
 		
@@ -137,7 +135,11 @@
 
 		<!-- SCRIPT -->
 		<script>
-		
+			var got_config = false;
+			var base_url = "http://image.tmdb.org/t/p/";
+			var poster_size = "w185";
+			var movies = [];
+
 			// Delete movie function
 		
 			function onDeleteMovie() {
@@ -168,7 +170,25 @@
 					alert("Please enter a movie name to delete");
 				}
 			}
-			
+
+			function onSearchMovie() {
+				// Clean up the movies array after the last search
+				while (movies.length) { movies.pop(); }
+
+				// Load in the configuration
+				get_moviedb_config();
+				
+				// Get the movie name from the text box
+				var moviename = $('[name=searchmoviename]').val();
+				
+				if (moviename) {
+					// Do the add
+					search_movie(moviename);
+					//$.mobile.changePage('#movies');
+				} else {
+					alert("Please enter a movie name to delete");
+				}
+			}	
 			
 			function onUpdateMovie() {
 				// Get the movie name from the test box
@@ -378,6 +398,83 @@
 						}
   					}
   				});
+			}
+						
+			function add_movie_to_view(movie) {
+				movie.poster_url = base_url + poster_size + movie.poster_path;
+				console.log(movie);
+			}
+			
+			function get_director(movies) {
+				console.log("Search returned " + movies.length.toString() + " movies");
+				// Now get the director name for each movie using this api
+				for (i = 0; i < movies.length; i++) {
+					url = "https://api.themoviedb.org/3/movie/" + movies[i].id.toString() + "/credits?api_key=b78036f1e3812b99f18b7d948b588a22";
+					$.ajax({type: 'GET', url: url, movie: movies[i],
+						success: function(msg) {
+							//console.log(msg);
+							// Find the director for this move
+							for (j = 0; j < msg.crew.length; j++) {
+								if (msg.crew[j].job == "Director") {
+									this.movie.director = msg.crew[j].name;
+									//console.log(movies[this.indexValue].id);
+								}
+							}
+							add_movie_to_view(this.movie);
+  					    }
+  					});
+				}
+			}
+			
+			function search_movie(name) {			
+				// Need to encode the name in case the user types in spaces or other things that don't
+				// work in a URL
+	
+				// Search for the move on themoviedb (this gives me the movie ID, poster_path) and parse the results
+				var url = "https://api.themoviedb.org/3/search/movie?api_key=b78036f1e3812b99f18b7d948b588a22&query=" + encodeURI(name);
+				$.ajax({type: 'GET', url: url,
+					success: function(msg) {
+						console.log(msg);
+						if (msg.message != 'success') {
+							// Parse the JSON
+							for (i = 0; i < msg.results.length; i++) {
+								movies.push(msg.results[i]);							
+							}
+							get_director(movies);
+						}
+  					}
+  				});
+			}
+			
+			function get_moviedb_config() {
+				if (got_config) {
+					return; // we already got the config
+				}
+
+				// Get the configuration for themoviedb site
+				var url = "https://api.themoviedb.org/3/configuration?api_key=b78036f1e3812b99f18b7d948b588a22";
+				$.ajax({type: 'GET', url: url,
+					success: function(msg) {
+						//console.log(msg);
+						if (msg.message != 'success') {
+							console.log(msg);
+							base_url = msg.images.base_url;
+							// See if we can find the w185 poster size - that is a decent on for this page
+							found_w185 = false;
+							for (i = 0; i < msg.images.poster_sizes.length; i++) {
+								if (msg.images.poster_sizes[i] == "w185") {
+									found_w185 = true;
+								}
+							}
+							if (found_w185 == false) {
+								// Need pick some other size - pick the 3 smallest size
+								poster_size = msg.images.poster_sizes[2];
+							}
+							console.log("Config: " + base_url + ", " + poster_size);
+						}
+  					}
+  				});
+  				got_config = true;
 			}
 
 		</script>

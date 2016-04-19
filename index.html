@@ -3,6 +3,7 @@
 	<head>
 		<title>Your Movie Database</title>
 		<meta name='viewport' content='width=device-width, initial-scale=1.0'>
+		<meta charset="UTF-8">
 		<script src='//ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js'></script>
 		<script src='//ajax.googleapis.com/ajax/libs/jquerymobile/1.4.5/jquery.mobile.min.js'></script>
 		<link rel='stylesheet' href='//ajax.googleapis.com/ajax/libs/jquerymobile/1.4.5/jquery.mobile.min.css'>
@@ -82,9 +83,11 @@
   					<input type="text" placeholder="Example - The Revenant" name="searchmoviename"><br>
 				</form>
 				<div class="button"><button type="button" onclick="onSearchMovie()"> Search</button></div>
+				
+				<div class="containerresults" id='searchlist'>
+  				</div>
 		</div>	
-		
-		
+	
 		
 	
 		
@@ -172,9 +175,10 @@
 			}
 
 			function onSearchMovie() {
-				// Clean up the movies array after the last search
+				// Clean up the movies from the previous search
 				while (movies.length) { movies.pop(); }
-
+				$("#searchlist").empty();
+				
 				// Load in the configuration
 				get_moviedb_config();
 				
@@ -398,11 +402,37 @@
 						}
   					}
   				});
-			}
-						
+			}				
+			
 			function add_movie_to_view(movie) {
 				movie.poster_url = base_url + poster_size + movie.poster_path;
 				console.log(movie);
+				//$("#movieposter").attr("src", movie.poster_url);
+				//$("#moviedirector").text(movie.director);
+				//console.log("Setting img source");
+				
+				// Create Div to hold this move
+				// <div class="itemresults"> 
+  				// <img src="#" class="poster" id='movieposter'> 
+  				// <h1 class="synop"></h1>
+  				// <h1 class="direct" id='moviedirector'></h1>
+  				// </div>
+				var result = document.createElement('div');
+			    result.setAttribute( 'class', 'itemresults' );
+			    var posterImage = document.createElement('img');
+			    posterImage.setAttribute('src', movie.poster_url);
+			    posterImage.setAttribute('class', 'poster');
+			    var director = document.createElement('h1');
+			    director.setAttribute('class', 'direct');
+			    director.textContent = movie.director;
+			    var synop = document.createElement('h1');
+				synop.setAttribute('class', 'synop');
+				synop.textContent = movie.overview;
+				result.appendChild(posterImage);
+				result.appendChild(synop);
+				result.appendChild(director);
+				$("#searchlist").append(result);
+				
 			}
 			
 			function get_director(movies) {
